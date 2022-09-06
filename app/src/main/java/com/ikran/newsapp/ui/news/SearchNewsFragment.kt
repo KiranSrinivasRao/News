@@ -3,16 +3,15 @@ package com.ikran.newsapp.ui.news
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikran.newsapp.R
 import com.ikran.newsapp.adapter.NewsAdapter
-import com.ikran.newsapp.adapter.TopNewsAdapter
 import com.ikran.newsapp.util.Constants
 import com.ikran.newsapp.util.Resource
 
@@ -29,7 +28,6 @@ class SearchNewsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setHasOptionsMenu(true)
         newsAdapter = NewsAdapter()
         activity?.onBackPressedDispatcher?.addCallback(this,
             object : OnBackPressedCallback(true){
@@ -47,33 +45,6 @@ class SearchNewsFragment : Fragment() {
     }
     private fun shouldInterceptBackPress() = true
 
-   /* override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.search_bookbark_menu, menu)
-        val searchItem:MenuItem = menu.findItem(R.id.menu_search_item)
-        val searchView = searchItem.actionView as SearchView
-
-        searchView.apply {
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    Log.i(logTag, "onQueryTextSubmit: $query")
-                    //hideKeyboard() & hit api
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    Log.i(logTag, "onQueryTextChange: $newText")
-                    return true
-                }
-
-            })
-            // Todo
-            setOnSearchClickListener {
-                searchView.setQuery("TODO", false)
-            }
-        }
-    }*/
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -83,6 +54,7 @@ class SearchNewsFragment : Fragment() {
         recyclerView.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(this@SearchNewsFragment.scrollListener)
         }
 
         return view
@@ -96,9 +68,12 @@ class SearchNewsFragment : Fragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles)
-
-                        //Log.i(logTag, newsResponse.toString())
+                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_COUNT + 2
+                        isLastPage = viewModel.topNewsPage == totalPages
+                        if(isLastPage){
+                            recyclerView.setPadding(0,0,0,0)
+                        }
 
                         val articleDetailFragment = ArticleDetailFragment()
 
@@ -133,10 +108,47 @@ class SearchNewsFragment : Fragment() {
 
     private fun showProgressBar() {
         Log.e(logTag, "showProgressBar")
+        isLoading = true
     }
 
     private fun hideProgressBar() {
         Log.e(logTag, "hideProgressBar")
+        isLoading = false
+    }
+
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+
+    val scrollListener = object:RecyclerView.OnScrollListener(){
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_COUNT
+
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem
+                    && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+            if(shouldPaginate){
+                viewModel.getTopNews("in")
+                isScrolling = false
+            }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                isScrolling = true
+            }
+        }
     }
 
     /*   override fun onActivityCreated(savedInstanceState: Bundle?) {
