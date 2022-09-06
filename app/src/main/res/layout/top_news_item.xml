@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_marginStart="@dimen/pad_min_dp"
+    android:layout_marginEnd="@dimen/pad_min_dp"
+    android:layout_marginTop="@dimen/pad_avg_dp"
+    android:layout_width="match_parent"
+    android:layout_height="330dp"
+    tools:context=".ui.news.TopNewsFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/sourceChip"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/imageViewTopNews"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:contentDescription="@string/content_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/textViewTopNewsHead"
+        style="@style/TextAppearance.App.Headline6"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/pad_min_dp"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/pad_avg_dp"
+        android:layout_marginEnd="@dimen/pad_min_dp"
+        android:maxLines="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.044"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTopNews"
+        tools:text="@string/heading" />
+
+    <TextView
+        android:id="@+id/textViewTopNewsDesc"
+        style="@style/TextAppearance.App.Subtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/pad_avg_dp"
+        android:layout_marginTop="@dimen/pad_min_dp"
+        android:layout_marginEnd="@dimen/pad_min_dp"
+        android:maxLines="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTopNewsHead"
+        tools:text="@string/description" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/sourceChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/pad_avg_dp"
+        android:layout_marginStart="@dimen/pad_avg_dp"
+        android:layout_marginEnd="@dimen/pad_min_dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTopNewsDesc"
+        tools:text="@string/news_source" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/pad_avg_dp"
+        android:layout_marginEnd="@dimen/pad_min_dp"
+        android:contentDescription="@string/content_description"
+        android:src="@drawable/bookmark_topnews"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTopNewsDesc"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

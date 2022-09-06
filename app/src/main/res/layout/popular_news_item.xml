@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/pad_min_dp">
+
+    <ImageView
+        android:id="@+id/imageViewImageUrl"
+        android:layout_width="152dp"
+        android:layout_height="156dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/content_description"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvHeadline"
+        style="@style/TextAppearance.App.Headline6"
+        android:layout_width="202dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toEndOf="@+id/imageViewImageUrl"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/popular_news" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        style="@style/TextAppearance.App.Subtitle1"
+        android:layout_width="195dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:singleLine="false"
+        android:textColorHint="#757575"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeadline"
+        tools:text="@string/description" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/sourceChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/imageViewImageUrl"
+        app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+        tools:text="@string/top_news" />
+
+    <ImageButton
+        android:id="@+id/bookmarkChip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/content_description"
+        android:gravity="center"
+        android:src="@drawable/bookmark_popular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/sourceChip"
+        app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/border_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sourceChip" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

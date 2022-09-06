@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ts_head">20sp</dimen>
+    <dimen name="pad_min_dp">8dp</dimen>
+    <dimen name="pad_avg_dp">16dp</dimen>
+</resources>
