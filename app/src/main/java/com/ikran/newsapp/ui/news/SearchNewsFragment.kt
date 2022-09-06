@@ -2,12 +2,13 @@ package com.ikran.newsapp.ui.news
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AbsListView
-import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikran.newsapp.R
@@ -63,16 +64,16 @@ class SearchNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewModel
-        viewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
-            when(response){
+        viewModel.searchNews.observe(viewLifecycleOwner) { response ->
+            when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_COUNT + 2
                         isLastPage = viewModel.topNewsPage == totalPages
-                        if(isLastPage){
-                            recyclerView.setPadding(0,0,0,0)
+                        if (isLastPage) {
+                            recyclerView.setPadding(0, 0, 0, 0)
                         }
 
                         val articleDetailFragment = ArticleDetailFragment()
@@ -84,26 +85,29 @@ class SearchNewsFragment : Fragment() {
                             articleDetailFragment.arguments = args
 
                             parentFragmentManager.apply {
-                                beginTransaction().replace(R.id.container, articleDetailFragment ).commit()
+                                beginTransaction().replace(R.id.container, articleDetailFragment)
+                                    .commit()
                             }
                         }
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
-                    try{
+                    try {
                         response.message?.let { message ->
                             Log.e(TopNewsFragment.logTag, message)
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
-                    }catch (e: Exception){
-                        Log.e(TopNewsFragment.logTag,"Error Fragment --- "+ e.message)
+                    } catch (e: Exception) {
+                        Log.e(TopNewsFragment.logTag, "Error Fragment --- " + e.message)
                     }
                 }
-                is Resource.Loading -> { showProgressBar()}
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
                 //else -> {}
             }
-        })
+        }
     }
 
     private fun showProgressBar() {
@@ -120,7 +124,7 @@ class SearchNewsFragment : Fragment() {
     var isLastPage = false
     var isScrolling = false
 
-    val scrollListener = object:RecyclerView.OnScrollListener(){
+    val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
@@ -136,7 +140,7 @@ class SearchNewsFragment : Fragment() {
 
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem
                     && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
-            if(shouldPaginate){
+            if (shouldPaginate) {
                 viewModel.getTopNews("in")
                 isScrolling = false
             }
@@ -145,7 +149,7 @@ class SearchNewsFragment : Fragment() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
 
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
             }
         }

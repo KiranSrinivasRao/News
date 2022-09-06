@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.AbsListView
-import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikran.newsapp.R
@@ -116,8 +116,8 @@ class TopNewsFragment : Fragment() {
                         topNewsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / QUERY_PAGE_COUNT + 2
                         isLastPage = viewModel.topNewsPage == totalPages
-                        if(isLastPage){
-                            popularNewsRecyclerView.setPadding(0,0,0,0)
+                        if (isLastPage) {
+                            popularNewsRecyclerView.setPadding(0, 0, 0, 0)
                         }
                         //Log.i(logTag, newsResponse.toString())
 
@@ -194,14 +194,14 @@ class TopNewsFragment : Fragment() {
 
     private fun hideProgressSnackBar() {
         Log.e(logTag, "hideProgressBar")
-        isLoading =false
+        isLoading = false
     }
 
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
 
-    val scrollListener = object:RecyclerView.OnScrollListener(){
+    val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
@@ -217,7 +217,7 @@ class TopNewsFragment : Fragment() {
 
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem
                     && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
-            if(shouldPaginate){
+            if (shouldPaginate) {
                 viewModel.getTopNews("in")
                 isScrolling = false
             }
@@ -226,7 +226,7 @@ class TopNewsFragment : Fragment() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
 
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                 isScrolling = true
             }
         }

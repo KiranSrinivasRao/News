@@ -61,8 +61,8 @@ class ArticleDetailFragment : Fragment() {
         webView.apply {
             webViewClient = WebViewClient()
             loadUrl(webUrl)
-            val webSetting:WebSettings = settings
-            webSetting.setJavaScriptCanOpenWindowsAutomatically(true)
+            val webSetting: WebSettings = settings
+            webSetting.javaScriptCanOpenWindowsAutomatically = true
         }
 
     }

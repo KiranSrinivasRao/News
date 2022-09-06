@@ -7,51 +7,49 @@ import android.net.NetworkCapabilities
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.ikran.newsapp.repository.NewsRepository
 import com.ikran.newsapp.NewsApp
 import com.ikran.newsapp.data.NewsApiResponse
+import com.ikran.newsapp.repository.NewsRepository
 import com.ikran.newsapp.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
-import java.util.Collections.addAll
 
 class NewsViewModel(app : Application, val newsRepository: NewsRepository)
     : AndroidViewModel(app) {
 
     val topNews: MutableLiveData<Resource<NewsApiResponse>> = MutableLiveData()
-    var topNewsPage  = 1
-    var topNewsResponse:NewsApiResponse? = null
+    var topNewsPage = 1
+    var topNewsResponse: NewsApiResponse? = null
 
     val searchNews: MutableLiveData<Resource<NewsApiResponse>> = MutableLiveData()
-    var searchNewsPage  = 1
-    var searchNewsResponse:NewsApiResponse? = null
+    var searchNewsPage = 1
+    var searchNewsResponse: NewsApiResponse? = null
 
     init {
         getTopNews(countryCode = "in")
     }
 
-    fun getTopNews(countryCode:String, pageNumber:Int =1) = viewModelScope.launch{
+    fun getTopNews(countryCode: String, pageNumber: Int = 1) = viewModelScope.launch {
         safeTopNewsCall(countryCode, topNewsPage)
     }
 
-    fun searchNews(query:String, pageNumber:Int =1) = viewModelScope.launch {
+    fun searchNews(query: String, pageNumber: Int = 1) = viewModelScope.launch {
         safeSearchNewsCall(query, searchNewsPage)
     }
 
     private fun handleTopNewsResponse(response: Response<NewsApiResponse>):Resource<NewsApiResponse>{
-        if(response.isSuccessful){
-            response.body()?.let {
-                    resultResponse ->
+        if(response.isSuccessful) {
+            response.body()?.let { resultResponse ->
                 topNewsPage++
-                if(topNewsResponse == null) {
+                if (topNewsResponse == null) {
                     topNewsResponse = resultResponse
-                }else{
+                } else {
                     val oldArticles = topNewsResponse?.articles
                     val newArticles = resultResponse.articles
                     oldArticles?.addAll(newArticles)
                 }
-                return  Resource.Success(topNewsResponse ?: resultResponse)
+                return Resource.Success(topNewsResponse ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
@@ -59,18 +57,17 @@ class NewsViewModel(app : Application, val newsRepository: NewsRepository)
     }
 
     private fun handleSearchNewsResponse(response: Response<NewsApiResponse>):Resource<NewsApiResponse>{
-        if(response.isSuccessful){
-            response.body()?.let {
-                    resultResponse ->
+        if(response.isSuccessful) {
+            response.body()?.let { resultResponse ->
                 searchNewsPage++
-                if(searchNewsResponse == null) {
+                if (searchNewsResponse == null) {
                     searchNewsResponse = resultResponse
-                }else{
+                } else {
                     val oldArticles = searchNewsResponse?.articles
                     val newArticles = resultResponse.articles
                     oldArticles?.addAll(newArticles)
                 }
-                return  Resource.Success(searchNewsResponse ?: resultResponse)
+                return Resource.Success(searchNewsResponse ?: resultResponse)
 
             }
         }
