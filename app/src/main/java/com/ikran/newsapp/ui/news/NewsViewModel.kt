@@ -38,8 +38,8 @@ class NewsViewModel(app : Application, val newsRepository: NewsRepository)
         safeSearchNewsCall(query, searchNewsPage)
     }
 
-    private fun handleTopNewsResponse(response: Response<NewsApiResponse>):Resource<NewsApiResponse>{
-        if(response.isSuccessful) {
+    private fun handleTopNewsResponse(response: Response<NewsApiResponse>):Resource<NewsApiResponse> {
+        if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 topNewsPage++
                 if (topNewsResponse == null) {
@@ -56,8 +56,8 @@ class NewsViewModel(app : Application, val newsRepository: NewsRepository)
 
     }
 
-    private fun handleSearchNewsResponse(response: Response<NewsApiResponse>):Resource<NewsApiResponse>{
-        if(response.isSuccessful) {
+    private fun handleSearchNewsResponse(response: Response<NewsApiResponse>):Resource<NewsApiResponse> {
+        if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 searchNewsPage++
                 if (searchNewsResponse == null) {
