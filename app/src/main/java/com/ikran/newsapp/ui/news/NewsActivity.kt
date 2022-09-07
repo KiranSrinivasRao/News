@@ -35,7 +35,7 @@ class NewsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setLogo(R.drawable.global_news_text)
         supportActionBar?.setDisplayUseLogoEnabled(true)
-        supportActionBar?.setTitle("")
+        supportActionBar?.title = ""
         val colorDrawable = ColorDrawable(Color.parseColor("#D9D9D9"))
         supportActionBar?.setBackgroundDrawable(colorDrawable)
     }

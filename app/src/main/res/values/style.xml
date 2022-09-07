@@ -22,7 +22,7 @@
         <item name="android:fontFamily">@font/inter</item>
     </style>
 
-    <style name="SearchViewStyle"  parent="Widget.AppCompat.SearchView">
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <!-- Gets rid of the search icon parent="Widget.AppCompat.SearchView"  child="androidx.appcompat.widget.SearchView" -->
         <item name="searchIcon">@drawable/search</item>
         <!-- Gets rid of the "underline" in the text -->
@@ -32,6 +32,7 @@
         <!-- The hint text that appears when the user has not typed anything -->
         <item name="queryHint">@string/search_hint</item>
     </style>
+
     <style name="ThemeOverlay.SearchView" parent="">
         <!-- Text color -->
         <item name="android:editTextColor">@color/black</item>
