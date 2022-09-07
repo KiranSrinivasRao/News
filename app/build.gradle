@@ -29,6 +29,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
 }
 
 dependencies {
@@ -56,6 +57,20 @@ dependencies {
     implementation 'io.insert-koin:koin-android:3.2.0'
     implementation 'io.insert-koin:koin-annotations:1.0.1'
 
+    // Kotest
+    //def kotest_version = '5.4.2'
+    //implementation("io.kotest:kotest-framework-engine:$kotest_version")
+    //testImplementation ("io.kotest:kotest-runner-junit5:$kotest_version")
+    //testImplementation ("io.kotest:kotest-extensions-koin:$kotest_version")
+    //testImplementation ("io.kotest:kotest-assertions-core:$kotest_version")
+
+    // Kotest for Android
+    def kotestVersion = "5.4.2" //"4.1.3" or
+    testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion") // optional, for kotest assertions
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion") // required
+    ///tasks.withType<Test> { useJUnitPlatform() }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

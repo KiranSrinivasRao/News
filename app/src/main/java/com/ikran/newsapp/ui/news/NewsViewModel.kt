@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
 
-class NewsViewModel(app : Application, val newsRepository: NewsRepository)
-    : AndroidViewModel(app) {
+class NewsViewModel(app: Application, val newsRepository: NewsRepository) :
+    AndroidViewModel(app) {
 
     val topNews: MutableLiveData<Resource<NewsApiResponse>> = MutableLiveData()
     var topNewsPage = 1
@@ -53,7 +53,6 @@ class NewsViewModel(app : Application, val newsRepository: NewsRepository)
             }
         }
         return Resource.Error(response.message())
-
     }
 
     private fun handleSearchNewsResponse(response: Response<NewsApiResponse>): Resource<NewsApiResponse> {
@@ -68,63 +67,58 @@ class NewsViewModel(app : Application, val newsRepository: NewsRepository)
                     oldArticles?.addAll(newArticles)
                 }
                 return Resource.Success(searchNewsResponse ?: resultResponse)
-
             }
         }
         return Resource.Error(response.message())
-
     }
 
-    private fun hasInternetConnection(): Boolean{
+    private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<NewsApp>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
 
         val activeNetwork = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
 
-        return when{
+        return when {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> { false}
+            else -> { false }
         }
     }
 
-    private suspend fun safeTopNewsCall(countryCode: String, pageNumber: Int){
+    private suspend fun safeTopNewsCall(countryCode: String, pageNumber: Int) {
         topNews.postValue(Resource.Loading())
         try {
-            if(hasInternetConnection()) {
+            if (hasInternetConnection()) {
                 val response = newsRepository.getTopNews(countryCode, pageNumber)
                 topNews.postValue(handleTopNewsResponse(response))
-            }else{
+            } else {
                 topNews.postValue(Resource.Error("No Internet Connection - Actual"))
             }
-        }catch (t: Throwable){
-            when(t){
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> topNews.postValue(Resource.Error("Network Failure"))
                 else -> topNews.postValue(Resource.Error("Conversion Error"))
             }
         }
-
     }
 
     private suspend fun safeSearchNewsCall(query: String, pageNumber: Int) {
-       searchNews.postValue(Resource.Loading())
-        try{
-        if(hasInternetConnection()){
-            val response = newsRepository.searchNews(query, pageNumber)
-            searchNews.postValue(handleSearchNewsResponse(response))
-        }else{
-            searchNews.postValue(Resource.Error("No Internet Connection - Actual"))
-        }
-        }catch (t: Throwable){
-            when(t){
+        searchNews.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = newsRepository.searchNews(query, pageNumber)
+                searchNews.postValue(handleSearchNewsResponse(response))
+            } else {
+                searchNews.postValue(Resource.Error("No Internet Connection - Actual"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
                 is IOException -> searchNews.postValue(Resource.Error("Network Failure"))
                 else -> searchNews.postValue(Resource.Error("Conversion Error"))
             }
         }
-
     }
-
 }

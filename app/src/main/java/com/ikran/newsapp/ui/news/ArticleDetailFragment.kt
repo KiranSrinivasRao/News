@@ -16,36 +16,39 @@ import com.ikran.newsapp.util.Constants
  */
 class ArticleDetailFragment : Fragment() {
 
-    lateinit var viewModel:NewsViewModel
-    lateinit var webView:WebView
+    lateinit var viewModel: NewsViewModel
+    lateinit var webView: WebView
     lateinit var webUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        activity?.onBackPressedDispatcher?.addCallback(this,
-            object :OnBackPressedCallback(true){
+        activity?.onBackPressedDispatcher?.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if(shouldInterceptBackPress()){
+                    if (shouldInterceptBackPress()) {
                         val topNewsFragment = TopNewsFragment()
                         parentFragmentManager.beginTransaction()
-                            .replace(R.id.container, topNewsFragment ).commitNow()
-                    }else{
+                            .replace(R.id.container, topNewsFragment).commitNow()
+                    } else {
                         isEnabled = false
                         activity?.onBackPressed()
                     }
                 }
-            })
+            }
+        )
     }
 
     private fun shouldInterceptBackPress() = true
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_article_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_article_detail, container, false)
         webView = view.findViewById(R.id.webView)
         webUrl = requireArguments().getString(Constants.URL_KEY) ?: "https://www.google.com"
 
@@ -60,13 +63,9 @@ class ArticleDetailFragment : Fragment() {
             webViewClient = WebViewClient()
             loadUrl(webUrl)
         }
-
     }
 
-
-
     companion object {
-        val logTag:String = ArticleDetailFragment::class.java.simpleName
-
+        val logTag: String = ArticleDetailFragment::class.java.simpleName
     }
 }

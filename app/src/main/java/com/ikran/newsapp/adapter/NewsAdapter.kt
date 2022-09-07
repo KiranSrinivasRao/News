@@ -13,9 +13,9 @@ import com.google.android.material.chip.Chip
 import com.ikran.newsapp.R
 import com.ikran.newsapp.data.Article
 
-class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-    inner class NewsViewHolder(itemView:View):RecyclerView.ViewHolder(itemView)
+    inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val differCallback =
 
@@ -32,24 +32,28 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        return NewsViewHolder(LayoutInflater.from(parent.context).inflate(
-            R.layout.popular_news_item, parent, false
-        ))
+        return NewsViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.popular_news_item,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val article = differ.currentList[position]
         val rootView = holder.itemView.rootView
-        val head:TextView = rootView.findViewById(R.id.tvHeadline)
-        val description:TextView = rootView.findViewById(R.id.tvDescription)
-        val source:Chip = rootView.findViewById(R.id.sourceChip)
-        val image:ImageView = rootView.findViewById(R.id.imageViewImageUrl)
+        val head: TextView = rootView.findViewById(R.id.tvHeadline)
+        val description: TextView = rootView.findViewById(R.id.tvDescription)
+        val source: Chip = rootView.findViewById(R.id.sourceChip)
+        val image: ImageView = rootView.findViewById(R.id.imageViewImageUrl)
         holder.itemView.apply {
             Glide.with(this).load(article.urlToImage).into(image)
             head.text = article.title
             description.text = article.description
             source.text = article.source?.name
-            setOnClickListener{
+            setOnClickListener {
                 onItemClickListener?.let { it(article) }
             }
         }
@@ -59,11 +63,9 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
         return differ.currentList.size
     }
 
-    private var onItemClickListener :((Article) -> Unit)?= null
+    private var onItemClickListener: ((Article) -> Unit)? = null
 
-    fun setOnClickListener(listener: (Article) -> Unit){
+    fun setOnClickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
     }
-
-
 }

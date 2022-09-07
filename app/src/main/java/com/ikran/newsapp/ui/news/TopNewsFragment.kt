@@ -2,7 +2,7 @@ package com.ikran.newsapp.ui.news
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.* // ktlint-disable no-wildcard-imports
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -24,7 +24,7 @@ class TopNewsFragment : Fragment() {
 
     companion object {
         fun newInstance() = TopNewsFragment()
-        val logTag:String = TopNewsFragment::class.java.simpleName
+        val logTag: String = TopNewsFragment::class.java.simpleName
     }
 
     lateinit var viewModel: NewsViewModel
@@ -43,20 +43,20 @@ class TopNewsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.search_bookbark_menu, menu)
-        val searchItem:MenuItem = menu.findItem(R.id.menu_search_item)
+        val searchItem: MenuItem = menu.findItem(R.id.menu_search_item)
         val searchView = searchItem.actionView as SearchView
 
         var job: Job? = null
 
         searchView.apply {
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     Log.i(logTag, "onQueryTextSubmit: $query")
-                    //hideKeyboard() & hit api
+                    // hideKeyboard() & hit api
                     job?.cancel()
-                    job = MainScope().launch{
+                    job = MainScope().launch {
                         delay(500L)
-                        if (!query.isNullOrBlank() ) {
+                        if (!query.isNullOrBlank()) {
                             viewModel.searchNews(query, 1)
                         }
                     }
@@ -74,7 +74,6 @@ class TopNewsFragment : Fragment() {
                     }*/
                     return true
                 }
-
             })
             setOnSearchClickListener {
                 searchView.setQuery("", false)
@@ -83,7 +82,8 @@ class TopNewsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_top_news, container, false)
@@ -119,10 +119,9 @@ class TopNewsFragment : Fragment() {
                         if (isLastPage) {
                             popularNewsRecyclerView.setPadding(0, 0, 0, 0)
                         }
-                        //Log.i(logTag, newsResponse.toString())
+                        // Log.i(logTag, newsResponse.toString())
 
                         val articleDetailFragment = ArticleDetailFragment()
-
 
                         newsAdapter.setOnClickListener { newsArticle ->
                             val args = Bundle()
@@ -153,7 +152,6 @@ class TopNewsFragment : Fragment() {
             }
         }
 
-
         viewModel.searchNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
@@ -165,7 +163,6 @@ class TopNewsFragment : Fragment() {
                         parentFragmentManager.apply {
                             beginTransaction().replace(R.id.container, searchNewsFragment).commit()
                         }
-
                     }
                 }
                 is Resource.Error -> {
@@ -184,7 +181,6 @@ class TopNewsFragment : Fragment() {
                 }
             }
         }
-
     }
 
     private fun showProgressSnackBar() {
@@ -215,8 +211,8 @@ class TopNewsFragment : Fragment() {
             val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_COUNT
 
-            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem
-                    && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem &&
+                isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
                 viewModel.getTopNews("in")
                 isScrolling = false
@@ -237,5 +233,4 @@ class TopNewsFragment : Fragment() {
 
            //  Use the ViewModel
        }*/
-
 }

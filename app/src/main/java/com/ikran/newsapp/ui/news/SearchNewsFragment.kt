@@ -20,7 +20,7 @@ class SearchNewsFragment : Fragment() {
 
     companion object {
         fun newInstance() = SearchNewsFragment()
-        val logTag:String = SearchNewsFragment::class.java.simpleName
+        val logTag: String = SearchNewsFragment::class.java.simpleName
     }
 
     lateinit var viewModel: NewsViewModel
@@ -30,24 +30,27 @@ class SearchNewsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         newsAdapter = NewsAdapter()
-        activity?.onBackPressedDispatcher?.addCallback(this,
-            object : OnBackPressedCallback(true){
+        activity?.onBackPressedDispatcher?.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if(shouldInterceptBackPress()){
+                    if (shouldInterceptBackPress()) {
                         val topNewsFragment = TopNewsFragment()
                         parentFragmentManager.beginTransaction()
-                            .replace(R.id.container, topNewsFragment ).commitNow()
-                    }else{
+                            .replace(R.id.container, topNewsFragment).commitNow()
+                    } else {
                         isEnabled = false
                         activity?.onBackPressed()
                     }
                 }
-            })
+            }
+        )
     }
     private fun shouldInterceptBackPress() = true
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_search_news, container, false)
@@ -78,7 +81,6 @@ class SearchNewsFragment : Fragment() {
 
                         val articleDetailFragment = ArticleDetailFragment()
 
-
                         newsAdapter.setOnClickListener { newsArticle ->
                             val args = Bundle()
                             args.putString(Constants.URL_KEY, newsArticle.url)
@@ -105,7 +107,7 @@ class SearchNewsFragment : Fragment() {
                 is Resource.Loading -> {
                     showProgressBar()
                 }
-                //else -> {}
+                // else -> {}
             }
         }
     }
@@ -138,8 +140,8 @@ class SearchNewsFragment : Fragment() {
             val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_COUNT
 
-            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem
-                    && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem &&
+                isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
                 viewModel.getTopNews("in")
                 isScrolling = false
@@ -160,5 +162,4 @@ class SearchNewsFragment : Fragment() {
 
            //  Use the ViewModel
        }*/
-
 }

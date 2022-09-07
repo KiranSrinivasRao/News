@@ -8,5 +8,4 @@ val activityModule = module {
     single {
         NewsViewModel(get(), get())
     }
-
 }

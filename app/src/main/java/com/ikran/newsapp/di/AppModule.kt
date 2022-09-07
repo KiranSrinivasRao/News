@@ -4,7 +4,6 @@ import com.ikran.newsapp.api.RetrofitInstance
 import com.ikran.newsapp.repository.NewsRepository
 import org.koin.dsl.module
 
-
 val appModule = module {
 
     single {
@@ -13,5 +12,4 @@ val appModule = module {
     single {
         NewsRepository()
     }
-
 }
