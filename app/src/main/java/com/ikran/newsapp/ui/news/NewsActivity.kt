@@ -1,5 +1,7 @@
 package com.ikran.newsapp.ui.news
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -28,5 +30,16 @@ class NewsActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
     }
 
-    fun isTopFragmentConsumedBackPress() = getTopFragment<BackPressHandler>()?.onBackPressed() == true
+    override fun onResume() {
+        super.onResume()
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setLogo(R.drawable.global_news_text)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setTitle("")
+        val colorDrawable = ColorDrawable(Color.parseColor("#D9D9D9"))
+        supportActionBar?.setBackgroundDrawable(colorDrawable)
+    }
+
+    fun isTopFragmentConsumedBackPress() =
+        getTopFragment<BackPressHandler>()?.onBackPressed() == true // ktlint-disable max-line-length
 }

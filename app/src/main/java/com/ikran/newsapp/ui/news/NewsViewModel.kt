@@ -11,9 +11,9 @@ import com.ikran.newsapp.NewsApp
 import com.ikran.newsapp.data.NewsApiResponse
 import com.ikran.newsapp.repository.NewsRepository
 import com.ikran.newsapp.util.Resource
+import java.io.IOException
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import java.io.IOException
 
 class NewsViewModel(app: Application, val newsRepository: NewsRepository) :
     AndroidViewModel(app) {
@@ -30,15 +30,16 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) :
         getTopNews(countryCode = "in")
     }
 
-    fun getTopNews(countryCode: String, pageNumber: Int = 1) = viewModelScope.launch {
+    fun getTopNews(countryCode: String) = viewModelScope.launch {
         safeTopNewsCall(countryCode, topNewsPage)
     }
 
-    fun searchNews(query: String, pageNumber: Int = 1) = viewModelScope.launch {
+    fun searchNews(query: String) = viewModelScope.launch {
         safeSearchNewsCall(query, searchNewsPage)
     }
 
-    private fun handleTopNewsResponse(response: Response<NewsApiResponse>): Resource<NewsApiResponse> {
+    private fun handleTopNewsResponse(response: Response<NewsApiResponse>):
+        Resource<NewsApiResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 topNewsPage++
@@ -55,7 +56,7 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) :
         return Resource.Error(response.message())
     }
 
-    private fun handleSearchNewsResponse(response: Response<NewsApiResponse>): Resource<NewsApiResponse> {
+    private fun handleSearchNewsResponse(response: Response<NewsApiResponse>): Resource<NewsApiResponse> { // ktlint-disable max-line-length
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 searchNewsPage++
@@ -84,7 +85,9 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) :
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> { false }
+            else -> {
+                false
+            }
         }
     }
 

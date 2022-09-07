@@ -57,7 +57,7 @@ class TopNewsFragment : Fragment() {
                     job = MainScope().launch {
                         delay(500L)
                         if (!query.isNullOrBlank()) {
-                            viewModel.searchNews(query, 1)
+                            viewModel.searchNews(query)
                         }
                     }
                     return true

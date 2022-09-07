@@ -1,6 +1,7 @@
 package com.ikran.newsapp
 
 import com.ikran.newsapp.repository.NewsRepository
+import io.kotest.common.ExperimentalKotest
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.framework.concurrency.FixedInterval
@@ -30,6 +31,7 @@ class MyTests : StringSpec({
 })
 
 // @Tags("SlowTest")
+@OptIn(ExperimentalKotest::class)
 class NetworkTransactionTests : ShouldSpec({
     val newsRepo = NewsRepository()
 
