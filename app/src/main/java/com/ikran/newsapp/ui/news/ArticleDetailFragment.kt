@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
@@ -48,8 +47,7 @@ class ArticleDetailFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_article_detail, container, false)
         webView = view.findViewById(R.id.webView)
-        webUrl = requireArguments().getString(Constants.URL_KEY)?:"www.google.com"
-
+        webUrl = requireArguments().getString(Constants.URL_KEY) ?: "https://www.google.com"
 
         return view
     }
@@ -61,8 +59,6 @@ class ArticleDetailFragment : Fragment() {
         webView.apply {
             webViewClient = WebViewClient()
             loadUrl(webUrl)
-            val webSetting: WebSettings = settings
-            webSetting.javaScriptCanOpenWindowsAutomatically = true
         }
 
     }

@@ -1,7 +1,7 @@
 package com.ikran.newsapp.ui.news
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ikran.newsapp.R
 import com.ikran.newsapp.repository.NewsRepository
@@ -11,6 +11,7 @@ import com.ikran.newsapp.util.getTopFragment
 class NewsActivity : AppCompatActivity() {
 
     lateinit var viewModel: NewsViewModel
+    //private val vm by viewModel<NewsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,7 @@ class NewsActivity : AppCompatActivity() {
 
         val viewModelProviderFactory = NewsViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this,viewModelProviderFactory ).get(NewsViewModel::class.java)
+
     }
 
     fun isTopFragmentConsumedBackPress() = getTopFragment<BackPressHandler>()?.onBackPressed() == true
